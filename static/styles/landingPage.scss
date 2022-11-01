@@ -3,6 +3,11 @@
   font-family: "Roboto", sans-serif;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -76,6 +81,7 @@ body {
     }
 
     &:hover {
+      transform: scale(1.1);
       cursor: pointer;
       scale: 1.1;
     }

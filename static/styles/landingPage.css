@@ -3,6 +3,11 @@
   font-family: "Roboto", sans-serif;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -71,6 +76,7 @@ body .card .bottom {
   rotate: 180deg;
 }
 body .card:hover {
+  transform: scale(1.1);
   cursor: pointer;
   scale: 1.1;
 }
