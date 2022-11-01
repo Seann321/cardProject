@@ -56,8 +56,12 @@ def playerTurn(move):
 
 
 def convertToHTMLString(hand):
-    x = ''
+    x = []
     for card in hand:
-        x += card[0]
-        x += deck.getCardSuitSymbol(card)
+        string = ''
+        string += deck.getCardSuitSymbol(card)
+        string += card[0]
+        string += deck.getCardSuitSymbol(card)
+        x.append(string)
+        print(x)
     return x
