@@ -1,22 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Blackjack</title>
-</head>
-<body>
-<p>Player Cards are {{playerHand}} total is {{playerTotal}}</p>
-<p>House Cards are {{houseHand}}</p>
-<p>{{winLose}}</p>
-<a href="/blackjackAddCard/">Add Card</a>
-<a href="/blackjack/">Play Again</a>
-<a href="/blackjackEndPlay/">Stop</a>
-<ul>
-    {% for card in playerHand %}
-
-    <p>{{ card }}</p>
-
-    {% endfor %}
-</ul>
-</body>
+  </head>
+  <body>
+    <p>Player Cards are {{playerHand}} total is {{playerTotal}}</p>
+    <p>House Cards are {{houseHand}}</p>
+    <p>{{winLose}}</p>
+    <a href="/blackjackAddCard/">Add Card</a>
+    <a href="/blackjack/">Play Again</a>
+    <a href="/blackjackEndPlay/">Stop</a>
+  </body>
+  <script>
+    let playerHandArray = "{{playerHand}}";
+    playerHandArray = playerHandArray.replaceAll("&#39;", "");
+    playerHandArray = playerHandArray.replaceAll("[", "");
+    playerHandArray = playerHandArray.replaceAll("]", "");
+    playerHandArray = playerHandArray.replaceAll(" ", "");
+    playerHandArray = playerHandArray.split(",");
+    playerHandArray.forEach((element) => {
+      let cardDiv = document.createElement("div");
+      document.body.appendChild(cardDiv);
+      cardDiv.innerHTML =
+        '<div class=playingCard> <div class="top">' +
+        element.charAt(0) +
+        '</div><div class = "text">' +
+        element.substring(1) +
+        '</div> <div class = "bottom">' +
+        element.charAt(0) +
+        "</div> </div>";
+    });
+  </script>
 </html>

@@ -58,4 +58,4 @@ def blank():
     return flask.redirect('/templates/index.html')
 
 
-app.run(host='0.0.0.0', port=5500)
+app.run(host='0.0.0.0', port=5500, debug=True)

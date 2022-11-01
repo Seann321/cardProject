@@ -61,7 +61,6 @@ def convertToHTMLString(hand):
         string = ''
         string += deck.getCardSuitSymbol(card)
         string += card[0]
-        string += deck.getCardSuitSymbol(card)
         x.append(string)
         print(x)
     return x
