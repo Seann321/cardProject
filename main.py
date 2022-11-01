@@ -19,13 +19,7 @@ app = Flask(__name__)
 @app.route('/index')
 def index():
     card = deck.getNewCard()
-    return render_template('index.html', card=f'{card[0]} {deck.getCardSuitSymbol(card, "white")}')
-
-
-@app.route('/my-link/')
-def my_link():
-    card = deck.getNewCard()
-    return render_template('index.html', card=f'{card[0]} {deck.getCardSuitSymbol(card, "white")}')
+    return render_template('index.html', cardValue=f'{card[0]}', cardSuit=f'{deck.getCardSuitSymbol(card, "white")}')
 
 
 @app.route('/')
