@@ -10,20 +10,13 @@ def shuffleDeck():
     shuffle(deck)
 
 
-def getTotal(hand):
-    values = []
-    for card in hand:
-        if card[0] == 'A':
-            values.append(11) if sum(values) < 11 else values.append(1)
-        else:
-            values.append(10) if card[0] in list('JQK') else values.append(int(card[0]))
-    return sum(values)
-
-
-def getNewCard():
+def getNewCard(allowShuffle=True):
     if len(deck) == 0:
-        print('Shuffling Deck')
-        shuffleDeck()
+        if allowShuffle:
+            print('Shuffling Deck')
+            shuffleDeck()
+        else:
+            return 'Shuffling is disabled'
     return deck.pop()
 
 
