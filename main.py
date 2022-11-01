@@ -11,20 +11,46 @@
 # TODO Display anything on a webpage
 import deck
 import flask
+import games.blackjack as blackjack
 from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
-@app.route('/index')
+@app.route('/templates/index.html')
 def index():
     card = deck.getNewCard()
     return render_template('index.html', cardValue=f'{card[0]}', cardSuit=f'{deck.getCardSuitSymbol(card, "white")}')
 
 
+@app.route('/blackjack/')
+def my_link():
+    firstWin = blackjack.startOver()
+    if firstWin:
+        blackjack.gameOver = True
+        winLose = blackjack.checkWinLose()
+        return render_template('blackjack.html', playerHand=blackjack.playerHand, houseHand=blackjack.houseHand,
+                               winLose=winLose)
+    else:
+        return render_template('blackjack.html', playerHand=blackjack.playerHand, houseHand=blackjack.houseHand[0])
+
+
+@app.route('/blackjackAddCard/')
+def blackjackAddCard():
+    blackjack.playerTurn('hit')
+    return render_template('blackjack.html', playerHand=blackjack.playerHand, houseHand=blackjack.houseHand[0])
+
+
+@app.route('/blackjackEndPlay/')
+def blackjackEndPlay():
+    winLose = blackjack.checkWinLose()
+    blackjack.gameOver = True
+    return render_template('blackjack.html', playerHand=blackjack.playerHand, houseHand=blackjack.houseHand, winLose=winLose)
+
+
 @app.route('/')
 def blank():
-    return flask.redirect('/index')
+    return flask.redirect('/templates/index.html')
 
 
 app.run(host='0.0.0.0', port=5500)

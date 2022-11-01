@@ -1,5 +1,6 @@
 import deck
-deck = deck.deck
+playerHand, houseHand = [], []
+gameOver = False
 
 
 def getTotal(hand):
@@ -12,39 +13,43 @@ def getTotal(hand):
     return sum(values)
 
 
-while True:
+def startOver():
+    global gameOver
+    global playerHand, houseHand
     playerHand, houseHand = [], []
-    print('Welcome To BlackJack')
+    gameOver = False
     for i in range(2):
         houseHand.append(deck.getNewCard())
         playerHand.append(deck.getNewCard())
     # Return the starting cards
     # print(f'Total is {getTotal(playerHand)} Your cards are {playerHand}. The Dealers card is {houseHand[0]}')
     if (getTotal(houseHand)) == 21:
-        break
-        # If the house wins with Blackjack return
-        # print('House wins with Blackjack')
+        return 'House Wins with Blackjack'
     elif getTotal(playerHand) == 21:
-        break
-        # If the player wins with Blackjack return
-        # print('You win with Blackjack!')
+        return 'You won with Blackjack!'
+    return ''
+
+
+def checkWinLose():
+    # Dealer pulls cards until hard 17
+    while getTotal(houseHand) < 16:
+        houseHand.append(deck.getNewCard())
+    if getTotal(playerHand) > 21:
+        # Return player busted over 21
+        return 'You busted, you lose.'
+    elif getTotal(houseHand) > 21:
+        # Return house busted over 21
+        return 'The house busted, you win!'
+    elif getTotal(playerHand) > getTotal(houseHand):
+        # Return player won
+        return 'You won!'
     else:
-        while getTotal(playerHand) < 21:
-            # Get player choice of hit, stand, or split.
-            break
-        # Dealer pulls cards until hard 17
-        while getTotal(houseHand) < 16:
-            houseHand.append(deck.getNewCard())
-        if getTotal(playerHand) > 21:
-            # Return player busted over 21
-            break
-        elif getTotal(houseHand) > 21:
-            # Return house busted over 21
-            break
-        elif getTotal(playerHand) > getTotal(houseHand):
-            # Return player won
-            break
-        else:
-            # Return house won
-            break
-    print()
+        # Return house won
+        return 'You lost...'
+
+
+def playerTurn(move):
+    if not gameOver:
+        if getTotal(playerHand) < 21:
+            if move == 'hit':
+                playerHand.append(deck.getNewCard())
