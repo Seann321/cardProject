@@ -30,18 +30,20 @@ def my_link():
         blackjack.gameOver = True
         winLose = blackjack.checkWinLose()
         return render_template('blackjack.html', playerHand=blackjack.convertToHTMLString(blackjack.playerHand),
-                               houseHand=blackjack.houseHand,
-                               winLose=winLose, playerTotal=blackjack.getTotal(blackjack.playerHand))
+                               houseHand=blackjack.convertToHTMLString(blackjack.houseHand, True),
+                               winLose=winLose, playerTotal=blackjack.getTotal(blackjack.playerHand),
+                               houseTotal=blackjack.getTotal(blackjack.houseHand))
     else:
         return render_template('blackjack.html', playerHand=blackjack.convertToHTMLString(blackjack.playerHand),
-                               houseHand=blackjack.houseHand[0],
+                               houseHand=blackjack.convertToHTMLString(blackjack.houseHand, True),
                                playerTotal=blackjack.getTotal(blackjack.playerHand))
 
 
 @app.route('/blackjackAddCard/')
 def blackjackAddCard():
     blackjack.playerTurn('hit')
-    return render_template('blackjack.html', playerHand=blackjack.playerHand, houseHand=blackjack.houseHand[0],
+    return render_template('blackjack.html', playerHand=blackjack.convertToHTMLString(blackjack.playerHand),
+                           houseHand=blackjack.convertToHTMLString(blackjack.houseHand, True),
                            playerTotal=blackjack.getTotal(blackjack.playerHand))
 
 
@@ -49,8 +51,9 @@ def blackjackAddCard():
 def blackjackEndPlay():
     winLose = blackjack.checkWinLose()
     blackjack.gameOver = True
-    return render_template('blackjack.html', playerHand=blackjack.playerHand, houseHand=blackjack.houseHand,
-                           winLose=winLose, playerTotal=blackjack.getTotal(blackjack.playerHand))
+    return render_template('blackjack.html', playerHand=blackjack.convertToHTMLString(blackjack.playerHand), houseHand=blackjack.convertToHTMLString(blackjack.houseHand),
+                           winLose=winLose, playerTotal=blackjack.getTotal(blackjack.playerHand),
+                           houseTotal=blackjack.getTotal(blackjack.houseHand))
 
 
 @app.route('/')

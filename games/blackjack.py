@@ -55,12 +55,24 @@ def playerTurn(move):
                 playerHand.append(deck.getNewCard())
 
 
-def convertToHTMLString(hand):
-    x = []
-    for card in hand:
+def convertToHTMLString(hand, houseCard=False):
+    if houseCard == False:
+        x = []
+        for card in hand:
+            string = ''
+            string += deck.getCardSuitSymbol(card)
+            string += card[0]
+            x.append(string)
+        return x
+    else:
+        x = []
         string = ''
+<<<<<<< HEAD
         string += deck.getCardSuitSymbol(card)
         string += card[0]
+=======
+        string += deck.getCardSuitSymbol(hand[0])
+        string += hand[0][0]
+>>>>>>> master
         x.append(string)
-        print(x)
-    return x
+        return x
