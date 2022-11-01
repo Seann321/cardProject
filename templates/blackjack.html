@@ -11,5 +11,12 @@
 <a href="/blackjackAddCard/">Add Card</a>
 <a href="/blackjack/">Play Again</a>
 <a href="/blackjackEndPlay/">Stop</a>
+<ul>
+    {% for card in playerHand %}
+
+    <li>{{ card }}</li>
+
+    {% endfor %}
+</ul>
 </body>
 </html>

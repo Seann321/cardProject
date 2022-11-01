@@ -53,3 +53,11 @@ def playerTurn(move):
         if getTotal(playerHand) < 21:
             if move == 'hit':
                 playerHand.append(deck.getNewCard())
+
+
+def convertToHTMLString(hand):
+    x = ''
+    for card in hand:
+        x += card[0]
+        x += deck.getCardSuitSymbol(card)
+    return x
