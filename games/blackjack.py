@@ -53,6 +53,8 @@ def playerTurn(move):
         if getTotal(playerHand) < 21:
             if move == 'hit':
                 playerHand.append(deck.getNewCard())
+            else:
+                checkWinLose()
 
 
 def convertToHTMLString(hand, houseCard=False):
