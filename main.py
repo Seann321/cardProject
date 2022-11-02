@@ -74,6 +74,11 @@ def startCrazy8():
     return render_template('crazy8.html')
 
 
+@app.route('/return/')
+def returnToLanding():
+    return flask.redirect('/templates/index.html')
+
+
 @app.route('/')
 def blank():
     return flask.redirect('/templates/index.html')
