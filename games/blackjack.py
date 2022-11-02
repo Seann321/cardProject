@@ -14,51 +14,56 @@ def getTotal(hand):
 
 
 def startOver():
-    global gameOver
-    global playerHand, houseHand
-    playerHand, houseHand = [], []
+    global playerHand, houseHand, gameOver
     gameOver = False
+    playerHand, houseHand = [], []
     for i in range(2):
         houseHand.append(deck.getNewCard())
         playerHand.append(deck.getNewCard())
     # Return the starting cards
     # print(f'Total is {getTotal(playerHand)} Your cards are {playerHand}. The Dealers card is {houseHand[0]}')
     if (getTotal(houseHand)) == 21:
+        gameOver = True
         return 'House Wins with Blackjack'
     elif getTotal(playerHand) == 21:
+        gameOver = True
         return 'You won with Blackjack!'
     return ''
 
 
 def checkWinLose():
+    global gameOver
     # Dealer pulls cards until hard 17
     while getTotal(houseHand) < 16:
         houseHand.append(deck.getNewCard())
     if getTotal(playerHand) > 21:
         # Return player busted over 21
+        gameOver = True
         return 'You busted, you lose.'
     elif getTotal(houseHand) > 21:
         # Return house busted over 21
+        gameOver = True
         return 'The house busted, you win!'
     elif getTotal(playerHand) > getTotal(houseHand):
         # Return player won
+        gameOver = True
         return 'You won!'
     else:
         # Return house won
+        gameOver = True
         return 'You lost...'
 
 
 def playerTurn(move):
-    if not gameOver:
-        if getTotal(playerHand) < 21:
-            if move == 'hit':
-                playerHand.append(deck.getNewCard())
-            else:
-                checkWinLose()
+    if getTotal(playerHand) < 21:
+        if move == 'hit':
+            playerHand.append(deck.getNewCard())
 
 
 def convertToHTMLString(hand, houseCard=False):
-    if houseCard == False:
+    if len(hand) is 0:
+        return 'Invalid Hand'
+    if not houseCard:
         x = []
         for card in hand:
             string = ''
