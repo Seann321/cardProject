@@ -24,7 +24,7 @@ def index():
 
 
 @app.route('/blackjack/')
-def my_link():
+def startBlackjack():
     firstWin = blackjack.startOver()
     if firstWin:
         blackjack.gameOver = True
@@ -54,6 +54,21 @@ def blackjackEndPlay():
     return render_template('blackjack.html', playerHand=blackjack.convertToHTMLString(blackjack.playerHand), houseHand=blackjack.convertToHTMLString(blackjack.houseHand),
                            winLose=winLose, playerTotal=blackjack.getTotal(blackjack.playerHand),
                            houseTotal=blackjack.getTotal(blackjack.houseHand))
+
+
+@app.route('/garbage/')
+def startGarbage():
+    return render_template('garbage.html')
+
+
+@app.route('/solitaire/')
+def startSolitaire():
+    return render_template('solitaire.html')
+
+
+@app.route('/crazy8/')
+def startCrazy8():
+    return render_template('crazy8.html')
 
 
 @app.route('/')
