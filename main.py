@@ -12,6 +12,7 @@
 import deck
 import flask
 import games.blackjack as blackjack
+import random
 from flask import Flask, render_template
 
 app = Flask(__name__)
@@ -19,8 +20,7 @@ app = Flask(__name__)
 
 @app.route('/templates/index.html')
 def index():
-    card = deck.getNewCard()
-    return render_template('index.html', cardValue=f'{card[0]}', cardSuit=f'{deck.getCardSuitSymbol(card, "white")}')
+    return render_template('index.html', credits=random.choice(['Sean & Zack', 'Zack & Sean']))
 
 
 @app.route('/blackjack/')

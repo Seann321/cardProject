@@ -19,7 +19,7 @@ body {
   overflow-x: hidden;
   background-color: #1b3b6f;
 }
-body .header {
+body .header{
   text-align: center;
   display: flex;
   align-items: center;
@@ -83,4 +83,19 @@ body .card:hover {
 }
 body .card:active {
   scale: 1;
-}/*# sourceMappingURL=landingPage.css.map */
+}
+body .footer{
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  width: 100%;
+  background-color: #709aae;
+  font-size: 2rem;
+  font-weight: bolder;
+  padding: 1rem;
+}
+/*# sourceMappingURL=landingPage.css.map */
