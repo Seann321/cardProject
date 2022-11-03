@@ -22,6 +22,8 @@ def getNewCard(allowShuffle=True):
 
 def getCardSuitSymbol(card, color='black'):
     if color == 'black':
+        if card == '0':
+            return '?'
         if card[1] == 'Spades':
             return '♠'
         elif card[1] == 'Hearts':

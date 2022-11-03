@@ -5,11 +5,11 @@ playerCardCount = 10
 
 
 def startNewGame():
+    global playerCardCount, playerHand
     playerHand.clear()
-    global playerCardCount
     playerCardCount = 10
-    for i in range(10):
-        playerHand.append(deck.getNewCard())
+    for i in range(playerCardCount):
+        playerHand.append('0')
 
 
 def pickCard(cardSpot):

@@ -67,15 +67,16 @@ def blackjackEndPlay():
 @app.route('/garbage/')
 def startGarbage():
     garbage.startNewGame()
-    return render_template('garbage.html', playerHand=deck.convertToHTMLString(garbage.playerHand))\
+    return render_template('garbage.html', playerHand=deck.convertToHTMLString(garbage.playerHand))
 
 
-
-@app.route('/garbageCardData/<string:cardData>', methods=['POST'])
+@app.route('/garbageCardData/<string:cardData>', methods=['POST', 'GET'])
 def useCardData(cardData):
+    garbage.startNewGame()
     cardData = json.loads(cardData)
-    print(cardData)
-    return '/'
+    if garbage.playerHand[cardData] == '0':
+        garbage.playerHand[cardData] = deck.getNewCard()
+    return render_template('garbage.html', playerHand=deck.convertToHTMLString(garbage.playerHand))
 
 
 @app.route('/solitaire/')
