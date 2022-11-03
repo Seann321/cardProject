@@ -26,10 +26,12 @@
             "</div></div>";
           i++
         });
-        function cardClicked(cardData){
-            const request = new XMLHttpRequest()
-            request.open('POST', `/garbageCardData/${JSON.stringify(cardData)}`)
-            request.send();
+        async function cardClicked(cardData){ // This grabs the array from main.py when a card is clicked
+            let obj
+            const res = fetch(`/garbageCardData/${JSON.stringify(cardData)}`);
+            obj = (await res).json();
+            let newPlayerHand = (obj.then(data => console.log(data))) //Dont remove console.log
+            console.log(newPlayerHand)
         }
     </script>
     <a href="/return/">Return to home</a>
