@@ -9,11 +9,14 @@
 # TODO Games will be Blackjack, Garbage, Crazy 8's, and Solitaire
 
 # TODO Display anything on a webpage
+import json
+
 import deck
 import flask
 import games.blackjack as blackjack
+import games.garbage as garbage
 import random
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -23,10 +26,11 @@ def index():
     return render_template('index.html', credits=random.choice(['Sean & Zack', 'Zack & Sean']))
 
 
+# Blackjack
 @app.route('/blackjack/')
 def startBlackjack():
     firstWin = blackjack.startOver()
-    if firstWin is not '':
+    if firstWin != '':
         return render_template('blackjack.html', playerHand=blackjack.convertToHTMLString(blackjack.playerHand),
                                houseHand=blackjack.convertToHTMLString(blackjack.houseHand),
                                winLose=firstWin, playerTotal=blackjack.getTotal(blackjack.playerHand),
@@ -59,9 +63,19 @@ def blackjackEndPlay():
                            houseTotal=blackjack.getTotal(blackjack.houseHand))
 
 
+# Garbage
 @app.route('/garbage/')
 def startGarbage():
-    return render_template('garbage.html')
+    garbage.startNewGame()
+    return render_template('garbage.html', playerHand=deck.convertToHTMLString(garbage.playerHand))\
+
+
+
+@app.route('/garbageCardData/<string:cardData>', methods=['POST'])
+def useCardData(cardData):
+    cardData = json.loads(cardData)
+    print(cardData)
+    return '/'
 
 
 @app.route('/solitaire/')
@@ -74,6 +88,7 @@ def startCrazy8():
     return render_template('crazy8.html')
 
 
+# Misc
 @app.route('/return/')
 def returnToLanding():
     return flask.redirect('/templates/index.html')

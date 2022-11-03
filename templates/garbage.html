@@ -5,6 +5,33 @@
     <title>Garbage</title>
 </head>
 <body>
+    <script>
+        let playerHandArray = "{{playerHand}}";
+        playerHandArray = playerHandArray.replaceAll("&#39;", "");
+        playerHandArray = playerHandArray.replaceAll("[", "");
+        playerHandArray = playerHandArray.replaceAll("]", "");
+        playerHandArray = playerHandArray.replaceAll(" ", "");
+        playerHandArray = playerHandArray.split(",");
+        let i = 0
+        playerHandArray.forEach((element) => {
+          let cardDiv = document.createElement("div");
+          document.body.appendChild(cardDiv);
+          cardDiv.innerHTML =
+            '<div class=playingCard onclick="cardClicked(' + i + ')">  <div class="top">' +
+            element.charAt(0) +
+            '</div><div class = "text">' +
+            element.substring(1) +
+            '</div> <div class = "bottom">' +
+            element.charAt(0) +
+            "</div></div>";
+          i++
+        });
+        function cardClicked(cardData){
+            const request = new XMLHttpRequest()
+            request.open('POST', `/garbageCardData/${JSON.stringify(cardData)}`)
+            request.send();
+        }
+    </script>
     <a href="/return/">Return to home</a>
 </body>
 </html>

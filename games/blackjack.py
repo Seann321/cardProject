@@ -61,17 +61,11 @@ def playerTurn(move):
 
 
 def convertToHTMLString(hand, houseCard=False):
-    if len(hand) is 0:
-        return 'Invalid Hand'
     if not houseCard:
-        x = []
-        for card in hand:
-            string = ''
-            string += deck.getCardSuitSymbol(card)
-            string += card[0]
-            x.append(string)
-        return x
+        return deck.convertToHTMLString(hand)
     else:
+        if len(hand) == 0:
+            return 'Invalid Hand'
         x = []
         string = ''
         string += deck.getCardSuitSymbol(hand[0])

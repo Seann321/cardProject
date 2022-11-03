@@ -39,3 +39,15 @@ def getCardSuitSymbol(card, color='black'):
             return '♧'
         elif card[1] == 'Diamonds':
             return '♢'
+
+
+def convertToHTMLString(hand):
+    if len(hand) == 0:
+        return 'Invalid Hand'
+    x = []
+    for card in hand:
+        string = ''
+        string += getCardSuitSymbol(card)
+        string += card[0]
+        x.append(string)
+    return x
