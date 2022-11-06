@@ -71,13 +71,17 @@ def startGarbage():
     return render_template('garbage.html', playerHand=deck.convertToHTMLString(garbage.playerHand))
 
 
-@app.route('/garbageCardData/<string:cardData>', methods=['POST', 'GET'])
+@app.route('/garbageReset/')
+def resetGarbage():
+    garbage.startNewGame()
+    return flask.redirect('/garbage')
+
+
+@app.route('/garbageCardData/<string:cardData>')
 def useCardData(cardData):
     cardData = json.loads(cardData)
     if garbage.playerHand[cardData] == '0':
         garbage.playerHand[cardData] = deck.getNewCard()
-    print(garbage.playerHand)
-    #return render_template('garbage.html', playerHand=deck.convertToHTMLString(garbage.playerHand))
     return {'playerHand': deck.convertToHTMLString(garbage.playerHand)}
 
 

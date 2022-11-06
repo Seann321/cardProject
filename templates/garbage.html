@@ -6,12 +6,7 @@
 </head>
 <body>
     <script>
-        let playerHandArray = "{{playerHand}}";
-        playerHandArray = playerHandArray.replaceAll("&#39;", "");
-        playerHandArray = playerHandArray.replaceAll("[", "");
-        playerHandArray = playerHandArray.replaceAll("]", "");
-        playerHandArray = playerHandArray.replaceAll(" ", "");
-        playerHandArray = playerHandArray.split(",");
+        let playerHandArray = convertStringToArray("{{playerHand}}");
         let i = 0
         playerHandArray.forEach((element) => {
           let cardDiv = document.createElement("div");
@@ -26,14 +21,24 @@
             "</div></div>";
           i++
         });
-        async function cardClicked(cardData){ // This grabs the array from main.py when a card is clicked
+        async function cardClicked(cardData) { // This grabs the array from main.py when a card is clicked
             let obj
+            let newPlayerHand
             const res = fetch(`/garbageCardData/${JSON.stringify(cardData)}`);
             obj = (await res).json();
-            let newPlayerHand = (obj.then(data => console.log(data))) //Dont remove console.log
-            console.log(newPlayerHand)
+            await obj.then(data => newPlayerHand = data.valueOf()) //Dont remove console.log
+            console.log(newPlayerHand);
+        }
+        function convertStringToArray(inputString){
+            inputString = inputString.replaceAll("&#39;", "");
+            inputString = inputString.replaceAll("[", "");
+            inputString = inputString.replaceAll("]", "");
+            inputString = inputString.replaceAll(" ", "");
+            inputString = inputString.split(',')
+            return inputString;
         }
     </script>
     <a href="/return/">Return to home</a>
+    <a href="/garbageReset/">Reset</a>
 </body>
 </html>
