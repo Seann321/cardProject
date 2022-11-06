@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="stylesheet" href="../static/styles/blackjack.css" />
     <meta charset="UTF-8" />
     <title>Blackjack</title>
   </head>
   <body>
-    <p>Player Cards are {{playerHand}} total is {{playerTotal}}</p>
+    <div class="houseCards"></div>
+    <div class="playerCards"></div>
+    <!-- <p>Player Cards are {{playerHand}} total is {{playerTotal}}</p>
     <p>House Cards are {{houseHand}} {{houseTotal}}</p>
     <p>{{winLose}}</p>
     <a href="/blackjackAddCard/">Add Card</a>
     <a href="/blackjack/">Play Again</a>
     <a href="/blackjackEndPlay/">Stop</a>
-    <a href="/return/">Return to home</a>
+    <a href="/return/">Return to home</a> -->
   </body>
   <script>
     let playerHandArray = "{{playerHand}}";
@@ -22,9 +25,9 @@
     playerHandArray = playerHandArray.split(",");
     playerHandArray.forEach((element) => {
       let cardDiv = document.createElement("div");
-      document.body.appendChild(cardDiv);
+      document.querySelector(".playerCards").appendChild(cardDiv);
       cardDiv.innerHTML =
-        '<div class=playingCard> <div class="top">' +
+        '<div class=card> <div class="top">' +
         element.charAt(0) +
         '</div><div class = "text">' +
         element.substring(1) +

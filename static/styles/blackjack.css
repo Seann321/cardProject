@@ -1,0 +1,58 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  margin: 0px;
+  padding: 0px;
+}
+body .playerCards {
+  width: 100%;
+  height: 33%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+body .playerCards .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  position: relative;
+  border-radius: 5px;
+  width: 14.2857142857vw;
+  aspect-ratio: 3/5;
+  background-color: white;
+  transition: all 300ms;
+  outline: 2px solid black;
+  font-size: clamp(20px, 10vw, 200px);
+}
+body .playerCards .card .top {
+  display: flex;
+  justify-content: flex-start;
+  height: 33%;
+  padding-left: 5px;
+}
+body .playerCards .card .text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 33%;
+  font-weight: bolder;
+}
+body .playerCards .card .bottom {
+  display: flex;
+  justify-content: flex-start;
+  height: 33%;
+  rotate: 180deg;
+  padding-left: 5px;
+}
+body .playerCards .card:hover {
+  transform: scale(1.01);
+  cursor: pointer;
+  scale: 1.1;
+}
+body .playerCards .card:active {
+  scale: 1;
+}/*# sourceMappingURL=blackjack.css.map */
