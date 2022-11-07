@@ -50,6 +50,9 @@ def convertToHTMLString(hand):
     for card in hand:
         string = ''
         string += getCardSuitSymbol(card)
-        string += card[0]
+        if card[0] == '1':
+            string += 'A'
+        else:
+            string += card[0]
         x.append(string)
     return x

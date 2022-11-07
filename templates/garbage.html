@@ -21,13 +21,21 @@
             "</div></div>";
           i++
         });
-        async function cardClicked(cardData) { // This grabs the array from main.py when a card is clicked
+        async function pullFromDeck(){ // Returns new card data from deck
             let obj
-            let newPlayerHand
-            const res = fetch(`/garbageCardData/${JSON.stringify(cardData)}`);
+            let cardData
+            const res = fetch(`/garbageDeckPull/`);
             obj = (await res).json();
-            await obj.then(data => newPlayerHand = data.valueOf()) //Dont remove console.log
-            console.log(newPlayerHand);
+            await obj.then(data => cardData = data.valueOf()) //Dont remove console.log
+            console.log(cardData);
+        }
+        async function cardClicked(data) { // This grabs the array from main.py when a card is clicked
+            let obj
+            let cardData
+            const res = fetch(`/garbageCardData/${JSON.stringify(data)}`);
+            obj = (await res).json();
+            await obj.then(data => cardData = data.valueOf()) //Dont remove console.log
+            console.log(cardData);
         }
         function convertStringToArray(inputString){
             inputString = inputString.replaceAll("&#39;", "");
@@ -40,5 +48,7 @@
     </script>
     <a href="/return/">Return to home</a>
     <a href="/garbageReset/">Reset</a>
+    <a onclick="pullFromDeck()">Pull From Deck</a>
+    <p>Your current card is {{currentCard}}</p>
 </body>
 </html>

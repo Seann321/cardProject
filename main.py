@@ -66,23 +66,41 @@ def blackjackEndPlay():
 # Garbage
 @app.route('/garbage/')
 def startGarbage():
-    if len(garbage.playerHand) == 0:
-        garbage.startNewGame()
-    return render_template('garbage.html', playerHand=deck.convertToHTMLString(garbage.playerHand))
+    return render_template('garbage.html', playerHand=deck.convertToHTMLString(garbage.playerHand),
+                           currentCard=garbage.cardSelected)
 
 
 @app.route('/garbageReset/')
 def resetGarbage():
-    garbage.startNewGame()
+    garbage.restart()
     return flask.redirect('/garbage')
 
 
 @app.route('/garbageCardData/<string:cardData>')
 def useCardData(cardData):
     cardData = json.loads(cardData)
-    if garbage.playerHand[cardData] == '0':
-        garbage.playerHand[cardData] = deck.getNewCard()
-    return {'playerHand': deck.convertToHTMLString(garbage.playerHand)}
+    if len(garbage.cardSelected) == 0:
+        return {'playerHand': deck.convertToHTMLString(garbage.playerHand), 'invalidMove': True, 'currentCard': garbage.cardSelected}
+    else:
+        if garbage.switchCardsValid(cardData):
+            # If spot is unknown
+            if garbage.playerHand[cardData] == '0':
+                garbage.playerHand[cardData] = garbage.cardSelected
+                garbage.choiceNewCard(deck.getNewCard())
+            # If card already in spot
+            else:
+                temp = garbage.playerHand[cardData]
+                garbage.playerHand[cardData] = garbage.cardSelected
+                garbage.cardSelected = temp
+            return {'playerHand': deck.convertToHTMLString(garbage.playerHand), 'invalidMove': False, 'currentCard': garbage.cardSelected}
+        else:
+            return {'playerHand': deck.convertToHTMLString(garbage.playerHand), 'invalidMove': True, 'currentCard': garbage.cardSelected}
+
+
+@app.route('/garbageDeckPull/')
+def garbageDeckPull():
+    garbage.cardSelected = deck.getNewCard()
+    return {'playerHand': deck.convertToHTMLString(garbage.playerHand), 'invalidMove': False, 'currentCard': garbage.cardSelected}
 
 
 @app.route('/solitaire/')
