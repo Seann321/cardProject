@@ -65,14 +65,13 @@ def blackjackEndPlay():
 
 # Garbage
 def garbageJSONData(invalidMove=False, gameOver=False):
-    return {'playerHand': deck.convertToHTMLString(garbage.playerHand), 'invalidMove': invalidMove,
-            'currentCard': garbage.cardSelected, 'gameOver': gameOver}
+    return {'playerHand': deck.convertDeckToHTMLString(garbage.playerHand), 'invalidMove': invalidMove,
+            'currentCard': deck.convertCardToHTMLString(garbage.cardSelected), 'gameOver': gameOver}
 
 
 @app.route('/garbage/')
 def startGarbage():
-    return render_template('garbage.html', playerHand=deck.convertToHTMLString(garbage.playerHand),
-                           currentCard=garbage.cardSelected)
+    return render_template('garbage.html', playerHand=deck.convertDeckToHTMLString(garbage.playerHand))
 
 
 @app.route('/garbageReset/')

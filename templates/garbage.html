@@ -6,6 +6,7 @@
 </head>
 <body>
     <script>
+        let cardDivArray = []
         let playerHandArray = convertStringToArray("{{playerHand}}");
         let i = 0
         playerHandArray.forEach((element) => {
@@ -20,6 +21,7 @@
             element.charAt(0) +
             "</div></div>";
           i++
+            cardDivArray.push(cardDiv)
         });
         async function pullFromDeck(){ // Returns new card data from deck
             let obj
@@ -27,15 +29,33 @@
             const res = fetch(`/garbageDeckPull/`);
             obj = (await res).json();
             await obj.then(data => cardData = data.valueOf()) //Dont remove console.log
-            console.log(cardData);
+            updateText(cardData)
         }
-        async function cardClicked(data) { // This grabs the array from main.py when a card is clicked
+        async function cardClicked(data) { // This grabs the JSON from main.py when a card is clicked
             let obj
             let cardData
             const res = fetch(`/garbageCardData/${JSON.stringify(data)}`);
             obj = (await res).json();
             await obj.then(data => cardData = data.valueOf()) //Dont remove console.log
-            console.log(cardData);
+            updateText(cardData)
+        }
+        function updateText(cardData){
+            let cardDisplayDiv = document.getElementById('currentCardDisplay')
+            cardDisplayDiv.textContent = 'Your current card is ' + cardData['currentCard']
+            playerHandArray = cardData['playerHand']
+            let i = 0
+            cardDivArray.forEach((element) => {
+                element.innerHTML =
+                '<div class=playingCard onclick="cardClicked(' + i + ')">  <div class="top">' +
+                playerHandArray[i].charAt(0) +
+                '</div><div class = "text">' +
+                playerHandArray[i].substring(1) +
+                '</div> <div class = "bottom">' +
+                playerHandArray[i].charAt(0) +
+                "</div></div>";
+                i++;
+        });
+
         }
         function convertStringToArray(inputString){
             inputString = inputString.replaceAll("&#39;", "");
@@ -49,6 +69,6 @@
     <a href="/return/">Return to home</a>
     <a href="/garbageReset/">Reset</a>
     <a onclick="pullFromDeck()">Pull From Deck</a>
-    <p>Your current card is {{currentCard}}</p>
+    <div id="currentCardDisplay">Your current card is {{currentCard}}</div>
 </body>
 </html>

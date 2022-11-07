@@ -62,7 +62,7 @@ def playerTurn(move):
 
 def convertToHTMLString(hand, houseCard=False):
     if not houseCard:
-        return deck.convertToHTMLString(hand)
+        return deck.convertDeckToHTMLString(hand)
     else:
         if len(hand) == 0:
             return 'Invalid Hand'
