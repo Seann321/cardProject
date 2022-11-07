@@ -43,8 +43,11 @@
             let cardDisplayDiv = document.getElementById('currentCardDisplay')
             cardDisplayDiv.textContent = 'Your current card is ' + cardData['currentCard']
             playerHandArray = cardData['playerHand']
+            if(cardData['gameOver'])
+                console.log('Game Over!')
             let i = 0
             cardDivArray.forEach((element) => {
+                if(playerHandArray[i] != null){
                 element.innerHTML =
                 '<div class=playingCard onclick="cardClicked(' + i + ')">  <div class="top">' +
                 playerHandArray[i].charAt(0) +
@@ -54,7 +57,9 @@
                 playerHandArray[i].charAt(0) +
                 "</div></div>";
                 i++;
-        });
+        }else{
+                    element.innerHTML = '';
+                }});
 
         }
         function convertStringToArray(inputString){

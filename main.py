@@ -97,13 +97,13 @@ def useCardData(cardData):
                 garbage.playerHand[cardData] = garbage.cardSelected
                 garbage.cardSelected = temp
             if garbage.checkForWin():
-                if garbage.playerCardCount == 1:
+                if garbage.playerCardCount == 0:
                     # Game Over
-                    return garbageJSONData(invalidMove=False, gameOver=True)
+                    return garbageJSONData(gameOver=True)
                 else:
                     garbage.playerCardCount -= 1
                     garbage.restart(garbage.playerCardCount)
-            return garbageJSONData(invalidMove=False)
+            return garbageJSONData()
         else:
             return garbageJSONData(invalidMove=True)
 

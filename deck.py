@@ -59,5 +59,6 @@ def convertDeckToHTMLString(hand):
 
 
 def convertCardToHTMLString(card):
-    print(card)
+    if len(card) < 1:
+        return '??'
     return getCardSuitSymbol(card) + card[0]
