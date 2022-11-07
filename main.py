@@ -64,6 +64,11 @@ def blackjackEndPlay():
 
 
 # Garbage
+def garbageJSONData(invalidMove=False, gameOver=False):
+    return {'playerHand': deck.convertToHTMLString(garbage.playerHand), 'invalidMove': invalidMove,
+            'currentCard': garbage.cardSelected, 'gameOver': gameOver}
+
+
 @app.route('/garbage/')
 def startGarbage():
     return render_template('garbage.html', playerHand=deck.convertToHTMLString(garbage.playerHand),
@@ -80,7 +85,7 @@ def resetGarbage():
 def useCardData(cardData):
     cardData = json.loads(cardData)
     if len(garbage.cardSelected) == 0:
-        return {'playerHand': deck.convertToHTMLString(garbage.playerHand), 'invalidMove': True, 'currentCard': garbage.cardSelected}
+        return garbageJSONData(invalidMove=True)
     else:
         if garbage.switchCardsValid(cardData):
             # If spot is unknown
@@ -92,15 +97,22 @@ def useCardData(cardData):
                 temp = garbage.playerHand[cardData]
                 garbage.playerHand[cardData] = garbage.cardSelected
                 garbage.cardSelected = temp
-            return {'playerHand': deck.convertToHTMLString(garbage.playerHand), 'invalidMove': False, 'currentCard': garbage.cardSelected}
+            if garbage.checkForWin():
+                if garbage.playerCardCount == 1:
+                    # Game Over
+                    return garbageJSONData(invalidMove=False, gameOver=True)
+                else:
+                    garbage.playerCardCount -= 1
+                    garbage.restart(garbage.playerCardCount)
+            return garbageJSONData(invalidMove=False)
         else:
-            return {'playerHand': deck.convertToHTMLString(garbage.playerHand), 'invalidMove': True, 'currentCard': garbage.cardSelected}
+            return garbageJSONData(invalidMove=True)
 
 
 @app.route('/garbageDeckPull/')
 def garbageDeckPull():
     garbage.cardSelected = deck.getNewCard()
-    return {'playerHand': deck.convertToHTMLString(garbage.playerHand), 'invalidMove': False, 'currentCard': garbage.cardSelected}
+    return garbageJSONData(invalidMove=False)
 
 
 @app.route('/solitaire/')

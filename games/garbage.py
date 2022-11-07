@@ -33,3 +33,10 @@ def switchCardsValid(card):
         return True
     else:
         return False
+
+
+def checkForWin():
+    for x in playerHand:
+        if x[0] == '0':
+            return False
+    return True
