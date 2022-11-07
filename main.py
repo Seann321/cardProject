@@ -23,6 +23,19 @@ def index():
 
 
 # Blackjack
+def blackjackJSONData(houseCard=False, winLose=''):
+    if houseCard:
+        return {'playerHand': blackjack.convertToHTMLString(blackjack.playerHand),
+                'houseHand': blackjack.convertToHTMLString(blackjack.houseHand, houseCard),
+                'winLose': winLose,
+                'playerTotal': blackjack.getTotal(blackjack.playerHand)}
+    return {'playerHand': blackjack.convertToHTMLString(blackjack.playerHand),
+            'houseHand': blackjack.convertToHTMLString(blackjack.houseHand),
+            'winLose': winLose,
+            'playerTotal': blackjack.getTotal(blackjack.playerHand),
+            'houseTotal': blackjack.getTotal(blackjack.houseHand)}
+
+
 @app.route('/blackjack/')
 def startBlackjack():
     firstWin = blackjack.startOver()
@@ -83,7 +96,7 @@ def resetGarbage():
 
 
 @app.route('/garbageCardData/<string:cardData>')
-def useCardData(cardData):
+def garbageCardData(cardData):
     cardData = json.loads(cardData)
     if len(garbage.cardSelected) == 0:
         return garbageJSONData(invalidMove=True)
