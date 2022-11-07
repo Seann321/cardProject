@@ -1,22 +1,18 @@
-# A Bunch of Card games
+"""
+A bunch of card games. Including Blackjack, Garbage, Solitaire, and Crazy 8's
+Created by Sean (Backend), and Zack (Frontend).
+Might put multiplayer in at some point. Currently just going to get the single-player working.
+Do note that some games use different methods for networking, as I am learning as I go.
+ - Sean
+"""
 
-# TODO Create Card UI
-# TODO Drag Cards
-# TODO Shuffle Deck / Interact
-# TODO Flip Cards over
-# TODO Snap the POS of the card
-
-# TODO Games will be Blackjack, Garbage, Crazy 8's, and Solitaire
-
-# TODO Display anything on a webpage
 import json
-
 import deck
 import flask
 import games.blackjack as blackjack
 import games.garbage as garbage
 import random
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 
 app = Flask(__name__)
 

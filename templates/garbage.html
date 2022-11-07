@@ -9,7 +9,7 @@
         let cardDivArray = []
         let playerHandArray = convertStringToArray("{{playerHand}}");
         let i = 0
-        playerHandArray.forEach((element) => {
+        playerHandArray.forEach((element) => { // Creates the 'cards'
           let cardDiv = document.createElement("div");
           document.body.appendChild(cardDiv);
           cardDiv.innerHTML =
@@ -23,7 +23,7 @@
           i++
             cardDivArray.push(cardDiv)
         });
-        async function pullFromDeck(){ // Returns new card data from deck
+        async function pullFromDeck(){ // Returns JSON Data holding Card Data when the deck is clicked
             let obj
             let cardData
             const res = fetch(`/garbageDeckPull/`);
@@ -31,15 +31,15 @@
             await obj.then(data => cardData = data.valueOf()) //Dont remove console.log
             updateText(cardData)
         }
-        async function cardClicked(data) { // This grabs the JSON from main.py when a card is clicked
+        async function cardClicked(data) { // Returns JSON Data holding Card Data when a card is clicked
             let obj
             let cardData
             const res = fetch(`/garbageCardData/${JSON.stringify(data)}`);
             obj = (await res).json();
-            await obj.then(data => cardData = data.valueOf()) //Dont remove console.log
+            await obj.then(data => cardData = data.valueOf())
             updateText(cardData)
         }
-        function updateText(cardData){
+        function updateText(cardData){ // Goes through and updates all screen text
             let cardDisplayDiv = document.getElementById('currentCardDisplay')
             cardDisplayDiv.textContent = 'Your current card is ' + cardData['currentCard']
             playerHandArray = cardData['playerHand']
@@ -58,11 +58,11 @@
                 "</div></div>";
                 i++;
         }else{
-                    element.innerHTML = '';
+                    element.innerHTML = ''; // Sets the cards no longer being used to nothing
                 }});
 
         }
-        function convertStringToArray(inputString){
+        function convertStringToArray(inputString){ // Cleans an array, could be replaced with JSON
             inputString = inputString.replaceAll("&#39;", "");
             inputString = inputString.replaceAll("[", "");
             inputString = inputString.replaceAll("]", "");
