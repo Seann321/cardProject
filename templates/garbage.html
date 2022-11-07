@@ -39,8 +39,8 @@
 
         // Goes through and updates all screen text with the given object
         function updateText(cardData){
-            let cardDisplayDiv = document.getElementById('currentCardDisplay')
-            cardDisplayDiv.textContent = 'Your current card is ' + cardData['currentCard']
+            document.getElementById('currentCardDisplay').textContent = 'Your current card is ' + cardData['currentCard']
+            document.getElementById('discardedCard').textContent = 'The Discard Pile is ' + cardData['discardedCard']
             playerHandArray = cardData['playerHand']
             if(cardData['gameOver'])
                 console.log('Game Over!')
@@ -71,7 +71,8 @@
     <a href="/return/">Return to home</a>
     <a href="/garbageReset/">Reset</a>
     <a onclick="fetchNewData('/garbageDeckPull/')">Pull From Deck</a>
-    <a onclick="fetchNewData('/garbageDeckPull/')">Discard Card</a>
-    <div id="currentCardDisplay">Your current card is {{currentCard}}</div>
+    <a onclick="fetchNewData('/garbageDiscardCard/')">Discard Card</a>
+    <div id="currentCardDisplay"></div>
+    <div id="discardedCard" onclick="fetchNewData('/garbagePullFromDiscard/')"></div>
 </body>
 </html>

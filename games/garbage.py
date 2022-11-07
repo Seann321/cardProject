@@ -22,8 +22,19 @@ def restart(cardCount=10):
 # Discard card and end your turn
 def discardCard():
     global discardedCard, cardSelected
+    if len(cardSelected) == 0:
+        return False
     discardedCard = cardSelected
     cardSelected = list()
+
+
+# Sets the selected card to the card in the discarded pile
+def pullFromDiscard():
+    global discardedCard, cardSelected
+    if len(discardedCard) == 0:
+        return False
+    cardSelected = discardedCard
+    discardedCard = list()
 
 
 # Setter for cardSelected
