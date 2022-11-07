@@ -1,5 +1,6 @@
 playerHand = []
 AIHand = []
+discardedCard = []
 playerCardCount = 10
 cardSelected = list()
 for i in range(playerCardCount):
@@ -8,13 +9,21 @@ for i in range(playerCardCount):
 
 # Resets everything according to x amount of cards in the hand
 def restart(cardCount=10):
-    global playerHand, AIHand, playerCardCount, cardSelected
+    global playerHand, AIHand, playerCardCount, cardSelected, discardedCard
     playerHand = []
     AIHand = []
+    discardedCard = []
     playerCardCount = cardCount
     cardSelected = list()
     for x in range(playerCardCount):
         playerHand.append('0')
+
+
+# Discard card and end your turn
+def discardCard():
+    global discardedCard, cardSelected
+    discardedCard = cardSelected
+    cardSelected = list()
 
 
 # Setter for cardSelected

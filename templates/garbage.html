@@ -7,39 +7,38 @@
 <body>
     <script>
         let cardDivArray = []
-        let playerHandArray = convertStringToArray("{{playerHand}}");
-        let i = 0
-        playerHandArray.forEach((element) => { // Creates the 'cards'
-          let cardDiv = document.createElement("div");
-          document.body.appendChild(cardDiv);
-          cardDiv.innerHTML =
-            '<div class=playingCard onclick="cardClicked(' + i + ')">  <div class="top">' +
-            element.charAt(0) +
-            '</div><div class = "text">' +
-            element.substring(1) +
-            '</div> <div class = "bottom">' +
-            element.charAt(0) +
-            "</div></div>";
-          i++
-            cardDivArray.push(cardDiv)
-        });
-        async function pullFromDeck(){ // Returns JSON Data holding Card Data when the deck is clicked
-            let obj
-            let cardData
-            const res = fetch(`/garbageDeckPull/`);
-            obj = (await res).json();
-            await obj.then(data => cardData = data.valueOf()) //Dont remove console.log
-            updateText(cardData)
+        let playerHandArray
+        init()
+
+
+        async function init(){
+            await fetchNewData('/initGarbage/', false).then((data) => playerHandArray = (data['playerHand']))
+            let i = 0;
+            // Creates the 'cards'
+            playerHandArray.forEach((element) => {
+              let cardDiv = document.createElement("div");
+              document.body.appendChild(cardDiv);
+              cardDiv.innerHTML = innerHTMLData(i);
+              i++
+                cardDivArray.push(cardDiv);
+            });
         }
-        async function cardClicked(data) { // Returns JSON Data holding Card Data when a card is clicked
+
+        // Returns JSON Data and updates text when card is clicked. Update decides to return object, or update text
+        async function fetchNewData(data, update=true) {
             let obj
             let cardData
-            const res = fetch(`/garbageCardData/${JSON.stringify(data)}`);
+            const res = fetch(data);
             obj = (await res).json();
             await obj.then(data => cardData = data.valueOf())
+            if(!update){
+                return cardData
+            }
             updateText(cardData)
         }
-        function updateText(cardData){ // Goes through and updates all screen text
+
+        // Goes through and updates all screen text with the given object
+        function updateText(cardData){
             let cardDisplayDiv = document.getElementById('currentCardDisplay')
             cardDisplayDiv.textContent = 'Your current card is ' + cardData['currentCard']
             playerHandArray = cardData['playerHand']
@@ -48,32 +47,31 @@
             let i = 0
             cardDivArray.forEach((element) => {
                 if(playerHandArray[i] != null){
-                element.innerHTML =
-                '<div class=playingCard onclick="cardClicked(' + i + ')">  <div class="top">' +
+                element.innerHTML = innerHTMLData(i);
+                i++;
+        }else{
+                    // Sets the cards no longer being used to nothing
+                    element.innerHTML = '';
+                }});
+        }
+
+        // Inner HTML for each of the cards
+        function innerHTMLData(i){
+            return '<div class=playingCard onclick="fetchNewData(`/garbageCardData/${JSON.stringify(' + i + ')}`)">  <div class="top">' +
                 playerHandArray[i].charAt(0) +
                 '</div><div class = "text">' +
                 playerHandArray[i].substring(1) +
                 '</div> <div class = "bottom">' +
                 playerHandArray[i].charAt(0) +
                 "</div></div>";
-                i++;
-        }else{
-                    element.innerHTML = ''; // Sets the cards no longer being used to nothing
-                }});
+        }
 
-        }
-        function convertStringToArray(inputString){ // Cleans an array, could be replaced with JSON
-            inputString = inputString.replaceAll("&#39;", "");
-            inputString = inputString.replaceAll("[", "");
-            inputString = inputString.replaceAll("]", "");
-            inputString = inputString.replaceAll(" ", "");
-            inputString = inputString.split(',')
-            return inputString;
-        }
+
     </script>
     <a href="/return/">Return to home</a>
     <a href="/garbageReset/">Reset</a>
-    <a onclick="pullFromDeck()">Pull From Deck</a>
+    <a onclick="fetchNewData('/garbageDeckPull/')">Pull From Deck</a>
+    <a onclick="fetchNewData('/garbageDeckPull/')">Discard Card</a>
     <div id="currentCardDisplay">Your current card is {{currentCard}}</div>
 </body>
 </html>

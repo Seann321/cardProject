@@ -67,7 +67,12 @@ def garbageJSONData(invalidMove=False, gameOver=False):
 
 @app.route('/garbage/')
 def startGarbage():
-    return render_template('garbage.html', playerHand=deck.convertDeckToHTMLString(garbage.playerHand))
+    return render_template('garbage.html')
+
+
+@app.route('/initGarbage/')
+def initGarbage():
+    return garbageJSONData()
 
 
 @app.route('/garbageReset/')
