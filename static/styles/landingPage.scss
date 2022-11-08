@@ -32,6 +32,21 @@ body {
     padding: 2rem;
   }
 
+  .footer {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    width: 100%;
+    background-color: #709aae;
+    font-size: 2rem;
+    font-weight: bolder;
+    padding: 1rem;
+  }
+
   .main {
     margin: 4rem;
     width: 80%;

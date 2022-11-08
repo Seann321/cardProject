@@ -29,14 +29,17 @@ def index():
 # Blackjack
 @app.route('/blackjack/')
 def startBlackjack():
-    firstWin = blackjack.startOver()
+    firstWin = blackjack.startOver()    
     if firstWin != '':
-        return render_template('blackjack.html', playerHand=blackjack.convertToHTMLString(blackjack.playerHand),
+        return render_template('blackjack.html', 
+                               playerHand=blackjack.convertToHTMLString(blackjack.playerHand),
                                houseHand=blackjack.convertToHTMLString(blackjack.houseHand),
-                               winLose=firstWin, playerTotal=blackjack.getTotal(blackjack.playerHand),
+                               winLose=firstWin, 
+                               playerTotal=blackjack.getTotal(blackjack.playerHand),
                                houseTotal=blackjack.getTotal(blackjack.houseHand))
     else:
-        return render_template('blackjack.html', playerHand=blackjack.convertToHTMLString(blackjack.playerHand),
+        return render_template('blackjack.html', 
+                               playerHand=blackjack.convertToHTMLString(blackjack.playerHand),
                                houseHand=blackjack.convertToHTMLString(blackjack.houseHand, True),
                                playerTotal=blackjack.getTotal(blackjack.playerHand))
 

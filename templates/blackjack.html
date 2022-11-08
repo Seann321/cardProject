@@ -6,34 +6,85 @@
     <title>Blackjack</title>
   </head>
   <body>
-    <div class="houseCards"></div>
-    <div class="playerCards"></div>
-    <!-- <p>Player Cards are {{playerHand}} total is {{playerTotal}}</p>
-    <p>House Cards are {{houseHand}} {{houseTotal}}</p>
-    <p>{{winLose}}</p>
-    <a href="/blackjackAddCard/">Add Card</a>
-    <a href="/blackjack/">Play Again</a>
-    <a href="/blackjackEndPlay/">Stop</a>
-    <a href="/return/">Return to home</a> -->
+    <div class="main">
+      <div class="houseCards">
+        <div class="titleText">House Cards</div>
+        <div class="cardsContainer">
+          <!--houseCards are sent here via JS -->
+        </div>
+      </div>
+      <div class="buttonContainer">
+        <a href="/blackjackAddCard/"
+          ><button class="hit" onclick="checkWinner()">Hit</button></a
+        >
+        <a href="/blackjackEndPlay/"
+          ><button class="hold" onclick="checkWinner()">Hold</button></a
+        >
+      </div>
+      <div class="playerCards">
+        <div class="cardsContainer">
+          <!--playerCards are sent here via JS -->
+        </div>
+        <div class="titleText">Your Cards</div>
+      </div>
+    </div>
+    <div class="winLoseContainer">
+      <div class="winLose">
+        <div class="text">{{winLose}}</div>
+        <a href="/blackjack/"><button>Play Again</button></a>
+        <a href="/return/"><button>Quit</button></a>
+      </div>
+    </div>
   </body>
+
   <script>
-    let playerHandArray = "{{playerHand}}";
-    playerHandArray = playerHandArray.replaceAll("&#39;", "");
-    playerHandArray = playerHandArray.replaceAll("[", "");
-    playerHandArray = playerHandArray.replaceAll("]", "");
-    playerHandArray = playerHandArray.replaceAll(" ", "");
-    playerHandArray = playerHandArray.split(",");
-    playerHandArray.forEach((element) => {
-      let cardDiv = document.createElement("div");
-      document.querySelector(".playerCards").appendChild(cardDiv);
-      cardDiv.innerHTML =
-        '<div class=card> <div class="top">' +
-        element.charAt(0) +
-        '</div><div class = "text">' +
-        element.substring(1) +
-        '</div> <div class = "bottom">' +
-        element.charAt(0) +
-        "</div> </div>";
-    });
+    let playerHandString = "{{playerHand}}";
+    let houseHandString = "{{houseHand}}";
+    let winLose = "{{winLose}}";
+    function removeExtraChars(cardString, who) {
+      //removes &#39,[,], and ' ' to easily parse out card info for styling
+      cardString = cardString
+        .replaceAll("&#39;", "")
+        .replaceAll("[", "")
+        .replaceAll("]", "")
+        .replaceAll(" ", "");
+
+      let cardArray = cardString.split(",");
+      cardArray.forEach((element) => {
+        let cardDiv = document.createElement("div");
+        who == "player"
+          ? document
+              .querySelector(".playerCards .cardsContainer")
+              .appendChild(cardDiv)
+          : document
+              .querySelector(".houseCards .cardsContainer")
+              .appendChild(cardDiv);
+
+        cardDiv.innerHTML =
+          '<div class=card> <div class="top">' +
+          element.charAt(0) +
+          '</div><div class = "text">' +
+          element.substring(1) +
+          '</div> <div class = "bottom">' +
+          element.charAt(0) +
+          "</div> </div>";
+
+        if (element.charAt(0) == "♦" || "♥") {
+          document.querySelector(".top").style.color = "red";
+          document.querySelector(".bottom").style.color = "red";
+          document.querySelector(".text").style.color = "red";
+        }
+      });
+    }
+
+    function checkWinner() {
+      winLose == ""
+        ? (document.querySelector(".winLoseContainer").style.display = "none")
+        : (document.querySelector(".winLoseContainer").style.display = "block");
+    }
+
+    removeExtraChars(playerHandString, "player");
+    removeExtraChars(houseHandString, "computer");
+    checkWinner();
   </script>
 </html>

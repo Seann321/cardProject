@@ -28,7 +28,7 @@ def startOver():
     elif getTotal(playerHand) == 21:
         gameOver = True
         return 'You won with Blackjack!'
-    return ''
+    return 
 
 
 def checkWinLose():
