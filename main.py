@@ -1,22 +1,18 @@
-# A Bunch of Card games
+"""
+A bunch of card games. Including Blackjack, Garbage, Solitaire, and Crazy 8's
+Created by Sean (Backend), and Zack (Frontend).
+Might put multiplayer in at some point. Currently just going to get the single-player working.
+Do note that some games use different methods for networking, as I am learning as I go.
+ - Sean
+"""
 
-# TODO Create Card UI
-# TODO Drag Cards
-# TODO Shuffle Deck / Interact
-# TODO Flip Cards over
-# TODO Snap the POS of the card
-
-# TODO Games will be Blackjack, Garbage, Crazy 8's, and Solitaire
-
-# TODO Display anything on a webpage
 import json
-
 import deck
 import flask
 import games.blackjack as blackjack
 import games.garbage as garbage
 import random
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -27,6 +23,19 @@ def index():
 
 
 # Blackjack
+def blackjackJSONData(houseCard=False, winLose=''):
+    if houseCard:
+        return {'playerHand': blackjack.convertToHTMLString(blackjack.playerHand),
+                'houseHand': blackjack.convertToHTMLString(blackjack.houseHand, houseCard),
+                'winLose': winLose,
+                'playerTotal': blackjack.getTotal(blackjack.playerHand)}
+    return {'playerHand': blackjack.convertToHTMLString(blackjack.playerHand),
+            'houseHand': blackjack.convertToHTMLString(blackjack.houseHand),
+            'winLose': winLose,
+            'playerTotal': blackjack.getTotal(blackjack.playerHand),
+            'houseTotal': blackjack.getTotal(blackjack.houseHand)}
+
+
 @app.route('/blackjack/')
 def startBlackjack():
     firstWin = blackjack.startOver()    
@@ -67,21 +76,73 @@ def blackjackEndPlay():
 
 
 # Garbage
+def garbageJSONData(invalidMove=False, gameOver=False):
+    return {'playerHand': deck.convertDeckToHTMLString(garbage.playerHand), 'invalidMove': invalidMove,
+            'currentCard': deck.convertCardToHTMLString(garbage.cardSelected), 'gameOver': gameOver,
+            'discardedCard': deck.convertCardToHTMLString(garbage.discardedCard),
+            'AIHand': deck.convertDeckToHTMLString(garbage.AIHand)}
+
+
 @app.route('/garbage/')
 def startGarbage():
-    if len(garbage.playerHand) == 0:
-        garbage.startNewGame()
-    return render_template('garbage.html', playerHand=deck.convertToHTMLString(garbage.playerHand))
+    return render_template('garbage.html')
 
 
-@app.route('/garbageCardData/<string:cardData>', methods=['POST', 'GET'])
-def useCardData(cardData):
+@app.route('/initGarbage/')
+def initGarbage():
+    return garbageJSONData()
+
+
+@app.route('/garbageReset/')
+def resetGarbage():
+    garbage.restart()
+    return flask.redirect('/garbage')
+
+
+@app.route('/garbageCardData/<string:cardData>')
+def garbageCardData(cardData):
     cardData = json.loads(cardData)
-    if garbage.playerHand[cardData] == '0':
-        garbage.playerHand[cardData] = deck.getNewCard()
-    print(garbage.playerHand)
-    #return render_template('garbage.html', playerHand=deck.convertToHTMLString(garbage.playerHand))
-    return {'playerHand': deck.convertToHTMLString(garbage.playerHand)}
+    if len(garbage.cardSelected) == 0:
+        return garbageJSONData(invalidMove=True)
+    else:
+        if garbage.switchCardsValid(cardData):
+            # If spot is unknown
+            if garbage.playerHand[cardData] == '0':
+                garbage.playerHand[cardData] = garbage.cardSelected
+                garbage.choiceNewCard(deck.getNewCard())
+            # If card already in spot
+            else:
+                temp = garbage.playerHand[cardData]
+                garbage.playerHand[cardData] = garbage.cardSelected
+                garbage.cardSelected = temp
+            if garbage.checkForWin():
+                if garbage.playerCardCount == 0:
+                    # Game Over
+                    return garbageJSONData(gameOver=True)
+                else:
+                    garbage.playerCardCount -= 1
+                    garbage.restart(garbage.playerCardCount, garbage.AICardCount)
+            return garbageJSONData()
+        else:
+            return garbageJSONData(invalidMove=True)
+
+
+@app.route('/garbageDeckPull/')
+def garbageDeckPull():
+    garbage.cardSelected = deck.getNewCard()
+    return garbageJSONData(invalidMove=False)
+
+
+@app.route('/garbageDiscardCard/')
+def garbageDiscardCard():
+    garbage.discardCard()
+    return garbageJSONData(invalidMove=False)
+
+
+@app.route('/garbagePullFromDiscard/')
+def garbagePullFromDiscard():
+    garbage.pullFromDiscard()
+    return garbageJSONData(invalidMove=False)
 
 
 @app.route('/solitaire/')

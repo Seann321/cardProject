@@ -6,34 +6,111 @@
 </head>
 <body>
     <script>
-        let playerHandArray = "{{playerHand}}";
-        playerHandArray = playerHandArray.replaceAll("&#39;", "");
-        playerHandArray = playerHandArray.replaceAll("[", "");
-        playerHandArray = playerHandArray.replaceAll("]", "");
-        playerHandArray = playerHandArray.replaceAll(" ", "");
-        playerHandArray = playerHandArray.split(",");
-        let i = 0
-        playerHandArray.forEach((element) => {
-          let cardDiv = document.createElement("div");
-          document.body.appendChild(cardDiv);
-          cardDiv.innerHTML =
-            '<div class=playingCard onclick="cardClicked(' + i + ')">  <div class="top">' +
-            element.charAt(0) +
-            '</div><div class = "text">' +
-            element.substring(1) +
-            '</div> <div class = "bottom">' +
-            element.charAt(0) +
-            "</div></div>";
-          i++
-        });
-        async function cardClicked(cardData){ // This grabs the array from main.py when a card is clicked
-            let obj
-            const res = fetch(`/garbageCardData/${JSON.stringify(cardData)}`);
-            obj = (await res).json();
-            let newPlayerHand = (obj.then(data => console.log(data))) //Dont remove console.log
-            console.log(newPlayerHand)
+        let playerDivArray = []
+        let playerHandArray
+        let AIHandArray
+        let AIDivArray = []
+        init()
+
+
+        async function init(){
+            await fetchNewData('/initGarbage/', false).then((data) => playerHandArray = (data['playerHand']))
+            await fetchNewData('/initGarbage/', false).then((data) => AIHandArray = (data['AIHand']))
+            let i = 0;
+            // Creates the 'cards'
+            createDivArray(playerHandArray, playerDivArray)
+            createDivArray(AIHandArray, AIDivArray)
         }
+
+        function createDivArray(handArray, divArray){
+            i = 0
+            handArray.forEach((element) => {
+              let cardDiv = document.createElement("div");
+              document.body.appendChild(cardDiv);
+              cardDiv.innerHTML = innerHTMLData(i);
+              i++
+                divArray.push(cardDiv);
+            });
+        }
+
+        // Returns JSON Data and updates text when card is clicked. Update decides to return object, or update text
+        async function fetchNewData(data, update=true) {
+            let obj
+            let cardData
+            const res = fetch(data);
+            obj = (await res).json();
+            await obj.then(data => cardData = data.valueOf())
+            if(!update){
+                return cardData
+            }
+            updateText(cardData)
+            updateTextAI(cardData)
+        }
+
+        // Goes through and updates all screen text with the given object
+        function updateText(cardData){
+            document.getElementById('currentCardDisplay').textContent = 'Your current card is ' + cardData['currentCard']
+            document.getElementById('discardedCard').textContent = 'The Discard Pile is ' + cardData['discardedCard']
+            playerHandArray = cardData['playerHand']
+            if(cardData['gameOver'])
+                console.log('Game Over!')
+            let i = 0
+            playerDivArray.forEach((element) => {
+                if(playerHandArray[i] != null){
+                element.innerHTML = innerHTMLData(i);
+                i++;
+        }else{
+                    // Sets the cards no longer being used to nothing
+                    element.innerHTML = '';
+                }});
+        }
+
+
+        // Goes through and updates all screen text with the given object
+        function updateTextAI(cardData){
+            AIHandArray = cardData['AIHand']
+            if(cardData['gameOver'])
+                console.log('Game Over!')
+            let i = 0
+            AIDivArray.forEach((element) => {
+                if(AIHandArray[i] != null){
+                element.innerHTML = innerHTMLDataAI(i);
+                i++;
+        }else{
+                    // Sets the cards no longer being used to nothing
+                    element.innerHTML = '';
+                }});
+        }
+
+        // Inner HTML for each of the player cards
+        function innerHTMLData(i){
+            return '<div class=playingCard onclick="fetchNewData(`/garbageCardData/${JSON.stringify(' + i + ')}`)">  <div class="top">' +
+                playerHandArray[i].charAt(0) +
+                '</div><div class = "text">' +
+                playerHandArray[i].substring(1) +
+                '</div> <div class = "bottom">' +
+                playerHandArray[i].charAt(0) +
+                "</div></div>";
+        }
+
+        // Inner HTML for each of the AI cards
+        function innerHTMLDataAI(i){
+            return '<div class=playingCard onclick="fetchNewData(`/garbageCardData/${JSON.stringify(' + i + ')}`)">  <div class="top">' +
+                AIHandArray[i].charAt(0) +
+                '</div><div class = "text">' +
+                AIHandArray[i].substring(1) +
+                '</div> <div class = "bottom">' +
+                AIHandArray[i].charAt(0) +
+                "</div></div>";
+        }
+
+
     </script>
     <a href="/return/">Return to home</a>
+    <a href="/garbageReset/">Reset</a>
+    <a onclick="fetchNewData('/garbageDeckPull/')">Pull From Deck</a>
+    <a onclick="fetchNewData('/garbageDiscardCard/')">Discard Card</a>
+    <div id="currentCardDisplay">Your current card is ??</div>
+    <div id="discardedCard" onclick="fetchNewData('/garbagePullFromDiscard/')">The Discard Pile is ??</div>
 </body>
 </html>

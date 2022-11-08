@@ -43,13 +43,22 @@ def getCardSuitSymbol(card, color='black'):
             return '♢'
 
 
-def convertToHTMLString(hand):
+def convertDeckToHTMLString(hand):
     if len(hand) == 0:
         return 'Invalid Hand'
     x = []
     for card in hand:
         string = ''
         string += getCardSuitSymbol(card)
-        string += card[0]
+        if card[0] == '1':
+            string += 'A'
+        else:
+            string += card[0]
         x.append(string)
     return x
+
+
+def convertCardToHTMLString(card):
+    if len(card) < 1:
+        return '??'
+    return getCardSuitSymbol(card) + card[0]
