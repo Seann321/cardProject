@@ -76,7 +76,8 @@ def blackjackEndPlay():
 def garbageJSONData(invalidMove=False, gameOver=False):
     return {'playerHand': deck.convertDeckToHTMLString(garbage.playerHand), 'invalidMove': invalidMove,
             'currentCard': deck.convertCardToHTMLString(garbage.cardSelected), 'gameOver': gameOver,
-            'discardedCard': deck.convertCardToHTMLString(garbage.discardedCard)}
+            'discardedCard': deck.convertCardToHTMLString(garbage.discardedCard),
+            'AIHand': deck.convertDeckToHTMLString(garbage.AIHand)}
 
 
 @app.route('/garbage/')
@@ -117,7 +118,7 @@ def garbageCardData(cardData):
                     return garbageJSONData(gameOver=True)
                 else:
                     garbage.playerCardCount -= 1
-                    garbage.restart(garbage.playerCardCount)
+                    garbage.restart(garbage.playerCardCount, garbage.AICardCount)
             return garbageJSONData()
         else:
             return garbageJSONData(invalidMove=True)

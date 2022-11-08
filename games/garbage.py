@@ -31,9 +31,14 @@ def restart(playerCount=10, AICount=10):
 
 # AI Turn, Is triggered when player discards their card
 def computersTurn():
-    global AICardSelected, discardedCard
+    global AICardSelected, discardedCard, AICardCount
     print(f'Before: {AIHand}')
-    if len(discardedCard) == 0 or discardedCard[0] in list('QJK'):
+    if len(discardedCard) == 0 or discardedCard[0] in list('QJ'):
+        AICardSelected = list(deck.getNewCard())
+    elif discardedCard[0] in list('AK'):
+        AICardSelected = discardedCard
+        discardedCard = list()
+    elif int(discardedCard[0]) > AICardCount:
         AICardSelected = list(deck.getNewCard())
     else:
         AICardSelected = discardedCard
@@ -43,6 +48,10 @@ def computersTurn():
     discardedCard = AICardSelected
     AICardSelected = list()
     print(f'After: {AIHand}')
+    if '0' not in AIHand:
+        print('Computer win')
+        AICardCount -= 1
+        restart(playerCardCount, AICardCount)
     return False
 
 
@@ -50,8 +59,10 @@ def computersTurn():
 def computerTurns():
     global AICardSelected, discardedCard
     if AICardSelected[0] not in list('AQJK'):
-        # Looks for valid moves to play. Counts Kings as invalid spots
-        if AIHand[int(AICardSelected[0]) - 1][0] == '0':
+        # Looks for valid moves to play.
+        if int(AICardSelected[0]) > AICardCount:
+            return
+        elif AIHand[int(AICardSelected[0]) - 1][0] == '0':
             AIHand[int(AICardSelected[0]) - 1] = AICardSelected
             AICardSelected = deck.getNewCard()
             computerTurns()
@@ -61,7 +72,12 @@ def computerTurns():
             AICardSelected = deck.getNewCard()
             computerTurns()
     elif AICardSelected[0] == 'K':
-        # Look for empty spot and place card there.
+        for spot in AIHand:
+            if spot[0] == '0':
+                AIHand[AIHand.index(spot)] = AICardSelected
+                AICardSelected = deck.getNewCard()
+                computerTurns()
+                return
         return
 
 
