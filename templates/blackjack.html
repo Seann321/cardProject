@@ -78,7 +78,7 @@
     }
 
     function checkWinner() {
-      winLose == ""
+      winLose == "" || winLose == 'None'
         ? (document.querySelector(".winLoseContainer").style.display = "none")
         : (document.querySelector(".winLoseContainer").style.display = "block");
     }
