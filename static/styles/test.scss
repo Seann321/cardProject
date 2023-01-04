@@ -1,0 +1,71 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.lines {
+  display: flex;
+  flex-grow: 1;
+  font-size: 50px;
+}
+
+#seperator{
+  max-height: 220px;
+}
+
+#player1Cards, #player2Cards, #seperator{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  position: relative;
+  border-radius: 5px;
+  height: 200px;
+  aspect-ratio: 3 / 5;
+  background-color: white;
+  transition: all 300ms;
+  outline: 2px solid black;
+  font-size: clamp(20px, 2vw, 200px);
+
+  .top {
+    display: flex;
+    justify-content: flex-start;
+    height: 33%;
+    padding-left: 5px;
+  }
+
+  .text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 33%;
+    font-weight: bolder;
+  }
+
+  .bottom {
+    display: flex;
+    justify-content: flex-start;
+    height: 33%;
+    rotate: 180deg;
+    padding-left: 5px;
+  }
+
+  &:hover {
+    transform: scale(1.01);
+    cursor: pointer;
+    scale: 1.1;
+  }
+
+  &:active {
+    scale: 1;
+  }
+}

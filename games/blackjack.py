@@ -20,15 +20,12 @@ def startOver():
     for i in range(2):
         houseHand.append(deck.getNewCard())
         playerHand.append(deck.getNewCard())
-    # Return the starting cards
-    # print(f'Total is {getTotal(playerHand)} Your cards are {playerHand}. The Dealers card is {houseHand[0]}')
     if (getTotal(houseHand)) == 21:
         gameOver = True
         return 'House Wins with Blackjack'
     elif getTotal(playerHand) == 21:
         gameOver = True
         return 'You won with Blackjack!'
-    return 
 
 
 def checkWinLose():

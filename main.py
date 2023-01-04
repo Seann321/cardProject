@@ -43,11 +43,11 @@ def startBlackjack():
         return render_template('blackjack.html',
                                playerHand=blackjack.convertToHTMLString(blackjack.playerHand),
                                houseHand=blackjack.convertToHTMLString(blackjack.houseHand),
-                               winLose=firstWin, 
+                               winLose=firstWin,
                                playerTotal=blackjack.getTotal(blackjack.playerHand),
                                houseTotal=blackjack.getTotal(blackjack.houseHand))
     else:
-        return render_template('blackjack.html', 
+        return render_template('blackjack.html',
                                playerHand=blackjack.convertToHTMLString(blackjack.playerHand),
                                houseHand=blackjack.convertToHTMLString(blackjack.houseHand, True),
                                playerTotal=blackjack.getTotal(blackjack.playerHand))
@@ -88,6 +88,11 @@ def garbageJSONData(invalidMove=False, gameOver=False):
 @app.route('/garbage/')
 def startGarbage():
     return render_template('garbage.html')
+
+
+@app.route('/test/')
+def startTest():
+    return render_template('test.html')
 
 
 @app.route('/initGarbage/')
@@ -131,6 +136,8 @@ def garbageCardData(cardData):
 
 @app.route('/garbageDeckPull/')
 def garbageDeckPull():
+    if len(garbage.cardSelected) != 0:
+        return garbageJSONData(invalidMove=True)
     garbage.cardSelected = deck.getNewCard()
     return garbageJSONData(invalidMove=False)
 

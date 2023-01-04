@@ -32,22 +32,30 @@ def restart(playerCount=10, AICount=10):
 # AI Turn, Is triggered when player discards their card
 def computersTurn():
     global AICardSelected, discardedCard, AICardCount
-    print(f'Before: {AIHand}')
     if len(discardedCard) == 0 or discardedCard[0] in list('QJ'):
         AICardSelected = list(deck.getNewCard())
-    elif discardedCard[0] in list('AK'):
+    elif discardedCard[0] in list('K'):
         AICardSelected = discardedCard
         discardedCard = list()
+    elif discardedCard[0] in list('A'):
+        if AIHand[0][0] != '0':
+            AICardSelected = list(deck.getNewCard())
+        else:
+            AICardSelected = discardedCard
+            discardedCard = list()
     elif int(discardedCard[0]) > AICardCount:
         AICardSelected = list(deck.getNewCard())
     else:
+        # Make sure card isn't needed
+        for card in AIHand:
+            if card[0] == discardedCard[0]:
+                discardedCard = list(deck.getNewCard())
         AICardSelected = discardedCard
         discardedCard = list()
     computerTurns()
     # No more moves, discards card.
     discardedCard = AICardSelected
     AICardSelected = list()
-    print(f'After: {AIHand}')
     if '0' not in AIHand:
         print('Computer win')
         AICardCount -= 1
