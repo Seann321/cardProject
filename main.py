@@ -6,6 +6,7 @@ Do note that some games use different methods for networking, as I am learning a
  - Sean
 """
 
+import os
 import json
 import deck
 import flask
@@ -175,4 +176,4 @@ def blank():
     return flask.redirect('/templates/index.html')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, port=os.getenv("PORT", default=5000))
