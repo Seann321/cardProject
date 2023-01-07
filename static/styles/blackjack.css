@@ -102,11 +102,7 @@ body .main .houseCards .cardsContainer .card:active {
 }
 body .winLoseContainer {
   position: absolute;
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
   width: fit-content;
-  height: -webkit-fit-content;
-  height: -moz-fit-content;
   height: fit-content;
   top: 25%;
   left: 0;
@@ -115,7 +111,9 @@ body .winLoseContainer {
   margin-right: auto;
 }
 body .winLoseContainer .winLose {
-  width: 300px;
+  width: 250px;
   background-color: white;
   aspect-ratio: 3/5;
-}/*# sourceMappingURL=blackjack.css.map */
+}
+
+/*# sourceMappingURL=blackjack.css.map */

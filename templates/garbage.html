@@ -6,8 +6,8 @@
     <title>Garbage</title>
 </head>
 <body>
-<div class="lines" style="background: #1b3b6f" id="player1Cards"></div>
-<div class="lines" style="background: #065a82" id="seperator">
+<div class="lines" style="background: #1b3b6f" id="player2Cards"></div>
+<div class="lines" style="background: #709aae" id="seperator">
     <div class="centerCards">
         Deck
         <a onclick="fetchNewData('/garbageDeckPull/')">
@@ -21,24 +21,24 @@
     <div class="centerCards">
         Discard Pile
         <a onclick="fetchNewData('/garbagePullFromDiscard/')" id="discardCard">
-            <div class="card" style="background: #065a82"></div>
+            <div class="card" style="background: #709aae"></div>
         </a>
 
     </div>
     <div class="centerCards">
         Discard
         <a onclick="fetchNewData('/garbageDiscardCard/')">
-            <div class="card" style="background: #065a82"></div>
+            <div class="card" style="background: #709aae"></div>
         </a>
     </div>
     <div class="centerCards">
         Current Card
         <a id="currentCardDisplay">
-            <div class="card" style="background: #065a82"></div>
+            <div class="card" style="background: #709aae"></div>
         </a>
     </div>
 </div>
-<div class="lines" style="background: #709aae" id="player2Cards"></div>
+<div class="lines" style="background: #065a82" id="player1Cards"></div>
 <script>
     let playerDivArray = []
     let playerHandArray
@@ -105,7 +105,7 @@
     function updateCard(cardData, id, data) {
         let cardText = cardData[data][1];
         if (cardText === '?') {
-            document.getElementById(id).innerHTML = '<div class="card" style="background: #065a82"></div>'
+            document.getElementById(id).innerHTML = '<div class="card" style="background: #709aae"></div>'
             return
         }
         if (cardText === '1') {
@@ -148,14 +148,20 @@
 
     // Inner HTML for each of the player cards
     function innerHTMLData(i) {
+        let innerText
         let color = 'style="color: black"'
         if (playerHandArray[i].charAt(0) === "♦" || playerHandArray[i].charAt(0) === "♥") {
             color = 'style="color: red"'
         }
+        if(playerHandArray[i].substring(1) === '0'){
+            innerText = '?'
+        }else{
+            innerText = playerHandArray[i].substring(1)
+        }
         return '<div class=card ' + color + ' onclick="fetchNewData(`/garbageCardData/${JSON.stringify(' + i + ')}`)">  <div class="top">' +
             playerHandArray[i].charAt(0) +
             '</div><div class = "text">' +
-            playerHandArray[i].substring(1) +
+            innerText +
             '</div> <div class = "bottom">' +
             playerHandArray[i].charAt(0) +
             "</div></div>";
@@ -163,14 +169,20 @@
 
     // Inner HTML for each of the AI cards
     function innerHTMLDataAI(i) {
+        let innerText
         let color = 'style="color: black"'
         if (AIHandArray[i].charAt(0) === "♦" || AIHandArray[i].charAt(0) === "♥") {
             color = 'style="color: red"'
         }
+        if(AIHandArray[i].substring(1) === '0'){
+            innerText = '?'
+        }else{
+            innerText = AIHandArray[i].substring(1)
+        }
         return '<div class=card ' + color + ' onclick="fetchNewData(`/garbageCardData/${JSON.stringify(' + i + ')}`)">  <div class="top">' +
             AIHandArray[i].charAt(0) +
             '</div><div class = "text">' +
-            AIHandArray[i].substring(1) +
+            innerText +
             '</div> <div class = "bottom">' +
             AIHandArray[i].charAt(0) +
             "</div></div>";
@@ -178,9 +190,9 @@
 
 
 </script>
-<div style="background: #065a82; font-size: 25px;text-align: center" id="footer">
-    <a href="/return/">Return to home</a>
-    <a href="/garbageReset/">Reset</a>
+<div style="background: grey; font-size: 25px;text-align: center" id="footer">
+    <a href="/return/" style="color: black">Return to home</a>
+    <a href="/garbageReset/" style="color:black;">Reset</a>
 </div>
 </body>
 </html>

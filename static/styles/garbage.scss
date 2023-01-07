@@ -12,18 +12,18 @@ html, body {
   font-size: 50px;
 }
 
-#seperator{
+#seperator {
   max-height: 275px;
   font-size: 25px;
 }
 
-#player1Cards, #player2Cards, #seperator{
+#player1Cards, #player2Cards, #seperator {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.centerCards{
+.centerCards {
   display: flex;
   flex-direction: column-reverse;
   align-items: center;

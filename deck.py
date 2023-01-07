@@ -45,7 +45,7 @@ def getCardSuitSymbol(card, color='black'):
 
 def convertDeckToHTMLString(hand):
     if len(hand) == 0:
-        return 'Invalid Hand'
+        return 'Game Over'
     x = []
     for card in hand:
         string = ''
