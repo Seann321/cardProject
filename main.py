@@ -177,8 +177,4 @@ def blank():
 
 
 if __name__ == "__main__":
-    # Dev
-    # app.run(host='0.0.0.0', port=8080)
-    # Production
-    from waitress import serve
-    serve(app, host='0.0.0.0', port='5000')
+    app.run(debug=True, port=os.getenv("PORT", default=5000))
